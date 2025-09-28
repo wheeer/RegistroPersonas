@@ -153,9 +153,9 @@ Partial Class Form1
         Label7.AutoSize = True
         Label7.Location = New Point(196, 9)
         Label7.Name = "Label7"
-        Label7.Size = New Size(117, 15)
+        Label7.Size = New Size(110, 15)
         Label7.TabIndex = 8
-        Label7.Text = "Ejemnplo: 123456789"
+        Label7.Text = "Ejemplo: 123456789"
         ' 
         ' txtRUT
         ' 
@@ -197,7 +197,7 @@ Partial Class Form1
         cboComuna.FormattingEnabled = True
         cboComuna.Location = New Point(90, 176)
         cboComuna.Name = "cboComuna"
-        cboComuna.Size = New Size(196, 23)
+        cboComuna.Size = New Size(203, 23)
         cboComuna.TabIndex = 15
         ' 
         ' Form1

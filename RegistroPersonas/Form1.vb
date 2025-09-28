@@ -6,6 +6,10 @@ Public Class Form1
     Dim connectionString As String = "Server=localhost;Database=registropersonas;User ID='root';Password='';"
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ' Configurar el nombre del formulario
+        Me.Text = "Registro de Usuarios"
+
+        ' Llenar el ComboBox con comunas
         cboComuna.Items.Add("Santiago")
         cboComuna.Items.Add("Cerrillos")
         cboComuna.Items.Add("Cerro Navia")
