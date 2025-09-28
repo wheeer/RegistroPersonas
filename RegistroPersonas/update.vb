@@ -113,6 +113,63 @@ Public Class update
     End Sub
 
     Private Sub btnActualizar_Click(sender As Object, e As EventArgs) Handles btnActualizar.Click
+        If cbRUT.SelectedItem Is Nothing Then
+            MessageBox.Show("Seleccione un RUT antes de actualizar.")
+            Return
+        End If
 
+        Dim rutSeleccionado As String = cbRUT.SelectedItem.ToString()
+        Dim nombre As String = txtNombre.Text.Trim()
+        Dim apellido As String = txtApellido.Text.Trim()
+        Dim ciudad As String = txtCiudad.Text.Trim()
+        Dim observacion As String = txtObservacion.Text.Trim()
+        Dim comuna As String = If(cboComuna.SelectedItem IsNot Nothing, cboComuna.SelectedItem.ToString(), "")
+
+        Dim sexo As String = ""
+        If rbtnMasculino.Checked Then
+            sexo = "Masculino"
+        ElseIf rbtnFemenino.Checked Then
+            sexo = "Femenino"
+        ElseIf rbtnNoEspecifica.Checked Then
+            sexo = "No especifica"
+        End If
+
+        ' Validación mínima
+        If String.IsNullOrWhiteSpace(nombre) OrElse String.IsNullOrWhiteSpace(apellido) OrElse String.IsNullOrWhiteSpace(comuna) Then
+            MessageBox.Show("Complete todos los campos obligatorios (Nombre, Apellido, Comuna).")
+            Return
+        End If
+
+        Using conn As New MySqlConnection(connectionString)
+            Try
+                conn.Open()
+
+                Dim sql As String = "UPDATE Personas 
+                                 SET Nombre=@nombre, Apellido=@apellido, Sexo=@sexo, 
+                                     Comuna=@comuna, Ciudad=@ciudad, Observacion=@observacion 
+                                 WHERE RUT=@rut"
+
+                Using cmd As New MySqlCommand(sql, conn)
+                    cmd.Parameters.AddWithValue("@nombre", nombre)
+                    cmd.Parameters.AddWithValue("@apellido", apellido)
+                    cmd.Parameters.AddWithValue("@sexo", sexo)
+                    cmd.Parameters.AddWithValue("@comuna", comuna)
+                    cmd.Parameters.AddWithValue("@ciudad", ciudad)
+                    cmd.Parameters.AddWithValue("@observacion", observacion)
+                    cmd.Parameters.AddWithValue("@rut", rutSeleccionado)
+
+                    Dim filasAfectadas As Integer = cmd.ExecuteNonQuery()
+
+                    If filasAfectadas > 0 Then
+                        MessageBox.Show("Datos actualizados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    Else
+                        MessageBox.Show("No se encontró el registro a actualizar.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    End If
+                End Using
+
+            Catch ex As Exception
+                MessageBox.Show("Error al actualizar: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+        End Using
     End Sub
 End Class
