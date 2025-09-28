@@ -127,4 +127,13 @@ Public Class Form1
         txtRUT.Focus() ' Colocar el foco en el campo RUT
     End Sub
 
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Dim frm As New index()
+
+        ' Mostrar el formulario Update
+        frm.Show()
+
+        ' (Opcional) Ocultar el formulario actual
+        Me.Hide()
+    End Sub
 End Class

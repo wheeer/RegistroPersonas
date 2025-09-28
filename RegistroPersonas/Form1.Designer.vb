@@ -40,6 +40,7 @@ Partial Class Form1
         txtCiudad = New TextBox()
         txtObservacion = New TextBox()
         cboComuna = New ComboBox()
+        Button2 = New Button()
         GroupBox1.SuspendLayout()
         SuspendLayout()
         ' 
@@ -200,11 +201,21 @@ Partial Class Form1
         cboComuna.Size = New Size(203, 23)
         cboComuna.TabIndex = 15
         ' 
+        ' Button2
+        ' 
+        Button2.Location = New Point(205, 281)
+        Button2.Name = "Button2"
+        Button2.Size = New Size(88, 23)
+        Button2.TabIndex = 16
+        Button2.Text = "Volver"
+        Button2.UseVisualStyleBackColor = True
+        ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(319, 316)
+        Controls.Add(Button2)
         Controls.Add(cboComuna)
         Controls.Add(txtObservacion)
         Controls.Add(txtCiudad)
@@ -246,5 +257,6 @@ Partial Class Form1
     Friend WithEvents txtCiudad As TextBox
     Friend WithEvents txtObservacion As TextBox
     Friend WithEvents cboComuna As ComboBox
+    Friend WithEvents Button2 As Button
 
 End Class

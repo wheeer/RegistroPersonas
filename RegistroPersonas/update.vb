@@ -1,0 +1,118 @@
+﻿Imports MySql.Data.MySqlClient
+Public Class update
+    ' Cadena de conexión para MySQL
+    Dim connectionString As String = "Server=localhost;Database=registropersonas;User ID='root';Password='';"
+    Private Sub update_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ' Configurar el nombre del formulario
+        Me.Text = "Actualizar Usuarios"
+
+        ' Llenar el ComboBox con comunas
+        cboComuna.Items.Add("Santiago")
+        cboComuna.Items.Add("Cerrillos")
+        cboComuna.Items.Add("Cerro Navia")
+        cboComuna.Items.Add("Conchalí")
+        cboComuna.Items.Add("El Bosque")
+        cboComuna.Items.Add("Estación Central")
+        cboComuna.Items.Add("Huechuraba")
+        cboComuna.Items.Add("Independencia")
+        cboComuna.Items.Add("La Cisterna")
+        cboComuna.Items.Add("La Florida")
+        cboComuna.Items.Add("La Granja")
+        cboComuna.Items.Add("La Pintana")
+        cboComuna.Items.Add("La Reina")
+        cboComuna.Items.Add("Las Condes")
+        cboComuna.Items.Add("Lo Barnechea")
+        cboComuna.Items.Add("Lo Espejo")
+        cboComuna.Items.Add("Lo Prado")
+        cboComuna.Items.Add("Macul")
+        cboComuna.Items.Add("Maipú")
+        cboComuna.Items.Add("Ñuñoa")
+        cboComuna.Items.Add("Pedro Aguirre Cerda")
+        cboComuna.Items.Add("Peñalolén")
+        cboComuna.Items.Add("Providencia")
+        cboComuna.Items.Add("Pudahuel")
+        cboComuna.Items.Add("Quilicura")
+        cboComuna.Items.Add("Quinta Normal")
+        cboComuna.Items.Add("Recoleta")
+        cboComuna.Items.Add("Renca")
+        cboComuna.Items.Add("San Joaquín")
+        cboComuna.Items.Add("San Miguel")
+        cboComuna.Items.Add("San Ramón")
+        cboComuna.Items.Add("Vitacura")
+        cboComuna.Items.Add("Puente Alto")
+        cboComuna.Items.Add("Pirque")
+        cboComuna.Items.Add("San José de Maipo")
+        cboComuna.Items.Add("Colina")
+        cboComuna.Items.Add("Lampa")
+        cboComuna.Items.Add("Tiltil")
+        cboComuna.Items.Add("San Bernardo")
+        cboComuna.Items.Add("Buin")
+        cboComuna.Items.Add("Calera de Tango")
+        cboComuna.Items.Add("Paine")
+
+        Using conn As New MySqlConnection(connectionString)
+            Try
+                conn.Open()
+                Dim sql As String = "SELECT RUT FROM Personas"
+                Using cmd As New MySqlCommand(sql, conn)
+                    Using reader As MySqlDataReader = cmd.ExecuteReader()
+                        While reader.Read()
+                            cbRUT.Items.Add(reader("RUT").ToString())
+                        End While
+                    End Using
+                End Using
+            Catch ex As Exception
+                MessageBox.Show("Error al cargar RUTs: " & ex.Message)
+            End Try
+        End Using
+    End Sub
+
+    Private Sub btnCargar_Click(sender As Object, e As EventArgs) Handles btnCargar.Click
+        If cbRUT.SelectedItem Is Nothing Then
+            MessageBox.Show("Seleccione un RUT para cargar los datos.")
+            Return
+        End If
+
+        Dim rutSeleccionado As String = cbRUT.SelectedItem.ToString()
+
+        Using conn As New MySqlConnection(connectionString)
+            Try
+                conn.Open()
+                Dim sql As String = "SELECT Nombre, Apellido, Sexo, Comuna, Ciudad, Observacion 
+                                     FROM Personas WHERE RUT = @rut"
+                Using cmd As New MySqlCommand(sql, conn)
+                    cmd.Parameters.AddWithValue("@rut", rutSeleccionado)
+
+                    Using reader As MySqlDataReader = cmd.ExecuteReader()
+                        If reader.Read() Then
+                            txtNombre.Text = reader("Nombre").ToString()
+                            txtApellido.Text = reader("Apellido").ToString()
+                            txtCiudad.Text = reader("Ciudad").ToString()
+                            txtObservacion.Text = reader("Observacion").ToString()
+
+                            ' Seleccionar comuna en el ComboBox
+                            Dim comuna As String = reader("Comuna").ToString()
+                            If cboComuna.Items.Contains(comuna) Then
+                                cboComuna.SelectedItem = comuna
+                            End If
+
+                            ' Seleccionar sexo
+                            Dim sexo As String = reader("Sexo").ToString()
+                            rbtnMasculino.Checked = (sexo = "Masculino")
+                            rbtnFemenino.Checked = (sexo = "Femenino")
+                            rbtnNoEspecifica.Checked = (sexo = "No especifica")
+                        Else
+                            MessageBox.Show("No se encontraron datos para el RUT seleccionado.")
+                        End If
+                    End Using
+                End Using
+            Catch ex As Exception
+                MessageBox.Show("Error al cargar datos: " & ex.Message)
+            End Try
+        End Using
+    End Sub
+
+    Private Sub btnActualizar_Click(sender As Object, e As EventArgs) Handles btnActualizar.Click
+
+    End Sub
+End Class
