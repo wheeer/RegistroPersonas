@@ -22,14 +22,14 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Label1 = New Label()
-        Label2 = New Label()
-        Label3 = New Label()
-        GroupBox1 = New GroupBox()
+        lblRut = New Label()
+        lblNombre = New Label()
+        lblApellido = New Label()
+        grSexo = New GroupBox()
         rbtnNoEspecifica = New CheckBox()
         rbtnFemenino = New CheckBox()
         rbtnMasculino = New CheckBox()
-        Label4 = New Label()
+        lblComuna = New Label()
         Label5 = New Label()
         Label6 = New Label()
         btnGuardar = New Button()
@@ -41,47 +41,49 @@ Partial Class Form1
         btnCargar = New Button()
         cbRUT = New ComboBox()
         btnActualizar = New Button()
-        GroupBox1.SuspendLayout()
+        btEliminar = New Button()
+        Label7 = New Label()
+        grSexo.SuspendLayout()
         SuspendLayout()
         ' 
-        ' Label1
+        ' lblRut
         ' 
-        Label1.AutoSize = True
-        Label1.Location = New Point(12, 9)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(25, 15)
-        Label1.TabIndex = 0
-        Label1.Text = "Rut"
+        lblRut.AutoSize = True
+        lblRut.Location = New Point(12, 9)
+        lblRut.Name = "lblRut"
+        lblRut.Size = New Size(30, 15)
+        lblRut.TabIndex = 0
+        lblRut.Text = "Rut*"
         ' 
-        ' Label2
+        ' lblNombre
         ' 
-        Label2.AutoSize = True
-        Label2.Location = New Point(12, 38)
-        Label2.Name = "Label2"
-        Label2.Size = New Size(56, 15)
-        Label2.TabIndex = 1
-        Label2.Text = "Nombres"
+        lblNombre.AutoSize = True
+        lblNombre.Location = New Point(12, 38)
+        lblNombre.Name = "lblNombre"
+        lblNombre.Size = New Size(61, 15)
+        lblNombre.TabIndex = 1
+        lblNombre.Text = "Nombres*"
         ' 
-        ' Label3
+        ' lblApellido
         ' 
-        Label3.AutoSize = True
-        Label3.Location = New Point(12, 70)
-        Label3.Name = "Label3"
-        Label3.Size = New Size(56, 15)
-        Label3.TabIndex = 2
-        Label3.Text = "Apellidos"
+        lblApellido.AutoSize = True
+        lblApellido.Location = New Point(12, 70)
+        lblApellido.Name = "lblApellido"
+        lblApellido.Size = New Size(61, 15)
+        lblApellido.TabIndex = 2
+        lblApellido.Text = "Apellidos*"
         ' 
-        ' GroupBox1
+        ' grSexo
         ' 
-        GroupBox1.Controls.Add(rbtnNoEspecifica)
-        GroupBox1.Controls.Add(rbtnFemenino)
-        GroupBox1.Controls.Add(rbtnMasculino)
-        GroupBox1.Location = New Point(12, 106)
-        GroupBox1.Name = "GroupBox1"
-        GroupBox1.Size = New Size(320, 57)
-        GroupBox1.TabIndex = 3
-        GroupBox1.TabStop = False
-        GroupBox1.Text = "Sexo"
+        grSexo.Controls.Add(rbtnNoEspecifica)
+        grSexo.Controls.Add(rbtnFemenino)
+        grSexo.Controls.Add(rbtnMasculino)
+        grSexo.Location = New Point(12, 106)
+        grSexo.Name = "grSexo"
+        grSexo.Size = New Size(337, 57)
+        grSexo.TabIndex = 3
+        grSexo.TabStop = False
+        grSexo.Text = "Sexo"
         ' 
         ' rbtnNoEspecifica
         ' 
@@ -113,14 +115,14 @@ Partial Class Form1
         rbtnMasculino.Text = "Masculino"
         rbtnMasculino.UseVisualStyleBackColor = True
         ' 
-        ' Label4
+        ' lblComuna
         ' 
-        Label4.AutoSize = True
-        Label4.Location = New Point(12, 179)
-        Label4.Name = "Label4"
-        Label4.Size = New Size(56, 15)
-        Label4.TabIndex = 4
-        Label4.Text = "Comuina"
+        lblComuna.AutoSize = True
+        lblComuna.Location = New Point(12, 179)
+        lblComuna.Name = "lblComuna"
+        lblComuna.Size = New Size(58, 15)
+        lblComuna.TabIndex = 4
+        lblComuna.Text = "Comuna*"
         ' 
         ' Label5
         ' 
@@ -153,28 +155,28 @@ Partial Class Form1
         ' 
         txtNombre.Location = New Point(90, 35)
         txtNombre.Name = "txtNombre"
-        txtNombre.Size = New Size(224, 23)
+        txtNombre.Size = New Size(259, 23)
         txtNombre.TabIndex = 10
         ' 
         ' txtApellido
         ' 
         txtApellido.Location = New Point(90, 67)
         txtApellido.Name = "txtApellido"
-        txtApellido.Size = New Size(224, 23)
+        txtApellido.Size = New Size(259, 23)
         txtApellido.TabIndex = 11
         ' 
         ' txtCiudad
         ' 
         txtCiudad.Location = New Point(90, 208)
         txtCiudad.Name = "txtCiudad"
-        txtCiudad.Size = New Size(203, 23)
+        txtCiudad.Size = New Size(259, 23)
         txtCiudad.TabIndex = 13
         ' 
         ' txtObservacion
         ' 
         txtObservacion.Location = New Point(90, 240)
         txtObservacion.Name = "txtObservacion"
-        txtObservacion.Size = New Size(203, 23)
+        txtObservacion.Size = New Size(259, 23)
         txtObservacion.TabIndex = 14
         ' 
         ' cboComuna
@@ -182,12 +184,12 @@ Partial Class Form1
         cboComuna.FormattingEnabled = True
         cboComuna.Location = New Point(90, 176)
         cboComuna.Name = "cboComuna"
-        cboComuna.Size = New Size(203, 23)
+        cboComuna.Size = New Size(259, 23)
         cboComuna.TabIndex = 15
         ' 
         ' btnCargar
         ' 
-        btnCargar.Location = New Point(205, 6)
+        btnCargar.Location = New Point(240, 6)
         btnCargar.Name = "btnCargar"
         btnCargar.Size = New Size(109, 23)
         btnCargar.TabIndex = 34
@@ -199,7 +201,7 @@ Partial Class Form1
         cbRUT.FormattingEnabled = True
         cbRUT.Location = New Point(90, 6)
         cbRUT.Name = "cbRUT"
-        cbRUT.Size = New Size(109, 23)
+        cbRUT.Size = New Size(128, 23)
         cbRUT.TabIndex = 33
         ' 
         ' btnActualizar
@@ -211,11 +213,32 @@ Partial Class Form1
         btnActualizar.Text = "Actualiar Datos"
         btnActualizar.UseVisualStyleBackColor = True
         ' 
+        ' btEliminar
+        ' 
+        btEliminar.Location = New Point(244, 281)
+        btEliminar.Name = "btEliminar"
+        btEliminar.Size = New Size(109, 23)
+        btEliminar.TabIndex = 36
+        btEliminar.Text = "Eliminar datos"
+        btEliminar.UseVisualStyleBackColor = True
+        ' 
+        ' Label7
+        ' 
+        Label7.AutoSize = True
+        Label7.Font = New Font("Segoe UI", 7F)
+        Label7.Location = New Point(244, 319)
+        Label7.Name = "Label7"
+        Label7.Size = New Size(102, 12)
+        Label7.TabIndex = 37
+        Label7.Text = "* Campos obligatorios"
+        ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(344, 316)
+        ClientSize = New Size(361, 340)
+        Controls.Add(Label7)
+        Controls.Add(btEliminar)
         Controls.Add(btnActualizar)
         Controls.Add(btnCargar)
         Controls.Add(cbRUT)
@@ -227,27 +250,27 @@ Partial Class Form1
         Controls.Add(btnGuardar)
         Controls.Add(Label6)
         Controls.Add(Label5)
-        Controls.Add(Label4)
-        Controls.Add(GroupBox1)
-        Controls.Add(Label3)
-        Controls.Add(Label2)
-        Controls.Add(Label1)
+        Controls.Add(lblComuna)
+        Controls.Add(grSexo)
+        Controls.Add(lblApellido)
+        Controls.Add(lblNombre)
+        Controls.Add(lblRut)
         Name = "Form1"
         Text = "Form1"
-        GroupBox1.ResumeLayout(False)
-        GroupBox1.PerformLayout()
+        grSexo.ResumeLayout(False)
+        grSexo.PerformLayout()
         ResumeLayout(False)
         PerformLayout()
     End Sub
 
-    Friend WithEvents Label1 As Label
-    Friend WithEvents Label2 As Label
-    Friend WithEvents Label3 As Label
-    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents lblRut As Label
+    Friend WithEvents lblNombre As Label
+    Friend WithEvents lblApellido As Label
+    Friend WithEvents grSexo As GroupBox
     Friend WithEvents rbtnNoEspecifica As CheckBox
     Friend WithEvents rbtnFemenino As CheckBox
     Friend WithEvents rbtnMasculino As CheckBox
-    Friend WithEvents Label4 As Label
+    Friend WithEvents lblComuna As Label
     Friend WithEvents Label5 As Label
     Friend WithEvents Label6 As Label
     Friend WithEvents btnGuardar As Button
@@ -259,5 +282,7 @@ Partial Class Form1
     Friend WithEvents btnCargar As Button
     Friend WithEvents cbRUT As ComboBox
     Friend WithEvents btnActualizar As Button
+    Friend WithEvents btEliminar As Button
+    Friend WithEvents Label7 As Label
 
 End Class

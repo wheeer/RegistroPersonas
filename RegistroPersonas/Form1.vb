@@ -6,8 +6,14 @@ Public Class Form1
     Dim connectionString As String = "Server=localhost;Database=registropersonas;User ID='root';Password='';"
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ' Configurar el nombre del formulario
+        ' Configuración del formulario
         Me.Text = "Registro de Usuarios"
+        Me.StartPosition = FormStartPosition.CenterScreen
+        Me.FormBorderStyle = FormBorderStyle.FixedSingle
+        Me.MaximizeBox = False
+
+        'Llenar el ComboBox de RUT desde la base de datos
+        cargarRUTs()
 
         ' Llenar el ComboBox con comunas
         cboComuna.Items.Add("Santiago")
@@ -52,8 +58,25 @@ Public Class Form1
         cboComuna.Items.Add("Buin")
         cboComuna.Items.Add("Calera de Tango")
         cboComuna.Items.Add("Paine")
+    End Sub
 
-        'Llenar el ComboBox de RUT desde la base de datos
+    ' Método para limpiar el formulario
+    Private Sub LimpiarFormulario()
+        cbRUT.Text = ""
+        txtNombre.Clear()
+        txtApellido.Clear()
+        txtCiudad.Clear()
+        txtObservacion.Clear()
+        rbtnMasculino.Checked = False
+        rbtnFemenino.Checked = False
+        rbtnNoEspecifica.Checked = False
+        cboComuna.SelectedIndex = -1
+        cbRUT.Focus() ' Colocar el foco en el campo RUT
+    End Sub
+
+    ' Método para cargar RUT
+    Private Sub cargarRUTs()
+        cbRUT.Items.Clear()
         Using conn As New MySqlConnection(connectionString)
             Try
                 conn.Open()
@@ -71,33 +94,77 @@ Public Class Form1
             End Try
         End Using
     End Sub
+    ' Método para obtener el sexo seleccionado
+    Private Function ObtenerSexo() As String
+        If rbtnMasculino.Checked Then
+            Return "Masculino"
+        ElseIf rbtnFemenino.Checked Then
+            Return "Femenino"
+        ElseIf rbtnNoEspecifica.Checked Then
+            Return "No especifica"
+        Else
+            Return String.Empty
+        End If
+    End Function
+    ' Método para validar campos obligatorios y cambio de color en etiquetas
+    Private Function ValidarCampos(rut As String, nombre As String, apellido As String, comuna As String) As Boolean
+        Dim ok As Boolean = True
+
+        If String.IsNullOrWhiteSpace(rut) Then
+            lblNombre.ForeColor = Color.Red
+            ok = False
+        Else
+            lblNombre.ForeColor = Color.Black
+        End If
+
+        If String.IsNullOrWhiteSpace(nombre) Then
+            lblRut.ForeColor = Color.Red
+            ok = False
+        Else
+            lblRut.ForeColor = Color.Black
+        End If
+
+        If String.IsNullOrWhiteSpace(apellido) Then
+            lblApellido.ForeColor = Color.Red
+            ok = False
+        Else
+            lblApellido.ForeColor = Color.Black
+        End If
+
+        If String.IsNullOrWhiteSpace(comuna) Then
+            lblComuna.ForeColor = Color.Red
+            ok = False
+        Else
+            lblComuna.ForeColor = Color.Black
+        End If
+
+        If Not ok Then
+            MessageBox.Show("Por favor, complete todos los campos obligatorios.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return False
+        End If
+
+        Return True
+    End Function
 
     Private Sub btnGuardar_Click(sender As Object, e As EventArgs) Handles btnGuardar.Click
-        Dim rut As String = cbRUT.Text
-        Dim nombre As String = txtNombre.Text
-        Dim apellido As String = txtApellido.Text
-        Dim sexo As String
+        Dim rut = cbRUT.Text
+        Dim nombre = txtNombre.Text
+        Dim apellido = txtApellido.Text
+        Dim sexo = ObtenerSexo()
 
         ' Validar la selección del sexo
-        If rbtnMasculino.Checked Then
-            sexo = "Masculino"
-        ElseIf rbtnFemenino.Checked Then
-            sexo = "Femenino"
-        ElseIf rbtnNoEspecifica.Checked Then
-            sexo = "No especifica"
-        Else
+        If sexo Is Nothing Then
             MessageBox.Show("Por favor, seleccione el sexo.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Return
         End If
 
         ' Obtener otros campos
-        Dim comuna As String = cboComuna.SelectedItem?.ToString()
-        Dim ciudad As String = txtCiudad.Text
-        Dim observacion As String = txtObservacion.Text
+        Dim comuna = cboComuna.SelectedItem?.ToString
+        Dim ciudad = txtCiudad.Text
+        Dim observacion = txtObservacion.Text
 
         ' Validar campos obligatorios
-        If String.IsNullOrWhiteSpace(rut) Or String.IsNullOrWhiteSpace(nombre) Or String.IsNullOrWhiteSpace(apellido) Or String.IsNullOrWhiteSpace(comuna) Then
-            MessageBox.Show("Por favor, complete todos los campos obligatorios.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        If Not ValidarCampos(rut, nombre, apellido, comuna) Then
             Return
         End If
 
@@ -106,7 +173,7 @@ Public Class Form1
             Try
                 conn.Open()
 
-                Dim sql As String = "INSERT INTO Personas (RUT, Nombre, Apellido, Sexo, Comuna, Ciudad, Observacion) " &
+                Dim sql = "INSERT INTO Personas (RUT, Nombre, Apellido, Sexo, Comuna, Ciudad, Observacion) " &
                 "VALUES (@rut, @nombre, @apellido, @sexo, @comuna, @ciudad, @observacion)"
 
                 Using cmd As New MySqlCommand(sql, conn)
@@ -123,26 +190,14 @@ Public Class Form1
 
                     ' Limpiar el formulario después de guardar
                     LimpiarFormulario()
+                    ' Recargar los RUTs en el ComboBox
+                    cargarRUTs()
                 End Using
 
             Catch ex As Exception
                 MessageBox.Show("Error al guardar los datos: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         End Using
-    End Sub
-
-    ' Método para limpiar el formulario
-    Private Sub LimpiarFormulario()
-        cbRUT.SelectedIndex = -1
-        txtNombre.Clear()
-        txtApellido.Clear()
-        txtCiudad.Clear()
-        txtObservacion.Clear()
-        rbtnMasculino.Checked = False
-        rbtnFemenino.Checked = False
-        rbtnNoEspecifica.Checked = False
-        cboComuna.SelectedIndex = -1
-        cbRUT.Focus() ' Colocar el foco en el campo RUT
     End Sub
 
     Private Sub btnCargar_Click(sender As Object, e As EventArgs) Handles btnCargar.Click
@@ -202,19 +257,16 @@ Public Class Form1
         Dim ciudad As String = txtCiudad.Text.Trim()
         Dim observacion As String = txtObservacion.Text.Trim()
         Dim comuna As String = If(cboComuna.SelectedItem IsNot Nothing, cboComuna.SelectedItem.ToString(), "")
+        Dim sexo As String = ObtenerSexo()
 
-        Dim sexo As String = ""
-        If rbtnMasculino.Checked Then
-            sexo = "Masculino"
-        ElseIf rbtnFemenino.Checked Then
-            sexo = "Femenino"
-        ElseIf rbtnNoEspecifica.Checked Then
-            sexo = "No especifica"
+        ' Validar la selección del sexo
+        If sexo Is Nothing Then
+            MessageBox.Show("Por favor, seleccione el sexo.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
         End If
 
-        ' Validación mínima
-        If String.IsNullOrWhiteSpace(nombre) OrElse String.IsNullOrWhiteSpace(apellido) OrElse String.IsNullOrWhiteSpace(comuna) Then
-            MessageBox.Show("Complete todos los campos obligatorios (Nombre, Apellido, Comuna).")
+        ' Validar campos obligatorios
+        If Not ValidarCampos(rutSeleccionado, nombre, apellido, comuna) Then
             Return
         End If
 
@@ -240,13 +292,57 @@ Public Class Form1
 
                     If filasAfectadas > 0 Then
                         MessageBox.Show("Datos actualizados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        LimpiarFormulario()
                     Else
                         MessageBox.Show("No se encontró el registro a actualizar.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                     End If
+
                 End Using
 
             Catch ex As Exception
                 MessageBox.Show("Error al actualizar: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+        End Using
+    End Sub
+
+    Private Sub btEliminar_Click(sender As Object, e As EventArgs) Handles btEliminar.Click
+        Dim rut As String = cbRUT.Text
+
+        ' Validar que haya un RUT seleccionado
+        If String.IsNullOrWhiteSpace(rut) Then
+            MessageBox.Show("Por favor, seleccione un RUT para eliminar.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
+
+        ' Confirmar eliminación
+        Dim result As DialogResult = MessageBox.Show("¿Está seguro que desea eliminar este registro?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+        If result = DialogResult.No Then
+            Return
+        End If
+
+        ' Eliminar el registro de la base de datos
+        Using conn As New MySqlConnection(connectionString)
+            Try
+                conn.Open()
+
+                Dim sql As String = "DELETE FROM Personas WHERE RUT = @rut"
+
+                Using cmd As New MySqlCommand(sql, conn)
+                    cmd.Parameters.AddWithValue("@rut", rut)
+
+                    Dim filas As Integer = cmd.ExecuteNonQuery()
+
+                    If filas > 0 Then
+                        MessageBox.Show("Registro eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        LimpiarFormulario()
+                        cargarRUTs()
+                    Else
+                        MessageBox.Show("No se encontró un registro con ese RUT.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    End If
+                End Using
+
+            Catch ex As Exception
+                MessageBox.Show("Error al eliminar el registro: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         End Using
     End Sub
