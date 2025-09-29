@@ -210,7 +210,7 @@ Partial Class Form1
         btnActualizar.Name = "btnActualizar"
         btnActualizar.Size = New Size(109, 23)
         btnActualizar.TabIndex = 35
-        btnActualizar.Text = "Actualiar Datos"
+        btnActualizar.Text = "Actualizar Datos"
         btnActualizar.UseVisualStyleBackColor = True
         ' 
         ' btEliminar
