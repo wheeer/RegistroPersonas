@@ -52,6 +52,24 @@ Public Class Form1
         cboComuna.Items.Add("Buin")
         cboComuna.Items.Add("Calera de Tango")
         cboComuna.Items.Add("Paine")
+
+        'Llenar el ComboBox de RUT desde la base de datos
+        Using conn As New MySqlConnection(connectionString)
+            Try
+                conn.Open()
+                Dim sql As String = "SELECT RUT FROM Personas ORDER BY RUT"
+                Using cmd As New MySqlCommand(sql, conn)
+                    Using reader As MySqlDataReader = cmd.ExecuteReader()
+                        cbRUT.Items.Clear() ' Limpiar antes de cargar
+                        While reader.Read()
+                            cbRUT.Items.Add(reader("RUT").ToString())
+                        End While
+                    End Using
+                End Using
+            Catch ex As Exception
+                MessageBox.Show("Error al cargar RUTs: " & ex.Message)
+            End Try
+        End Using
     End Sub
 
     Private Sub btnGuardar_Click(sender As Object, e As EventArgs) Handles btnGuardar.Click
