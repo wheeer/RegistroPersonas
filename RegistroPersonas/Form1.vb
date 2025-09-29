@@ -54,8 +54,8 @@ Public Class Form1
         cboComuna.Items.Add("Paine")
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Dim rut As String = txtRUT.Text
+    Private Sub btnGuardar_Click(sender As Object, e As EventArgs) Handles btnGuardar.Click
+        Dim rut As String = cbRUT.Text
         Dim nombre As String = txtNombre.Text
         Dim apellido As String = txtApellido.Text
         Dim sexo As String
@@ -115,7 +115,7 @@ Public Class Form1
 
     ' Método para limpiar el formulario
     Private Sub LimpiarFormulario()
-        txtRUT.Clear()
+        cbRUT.SelectedIndex = -1
         txtNombre.Clear()
         txtApellido.Clear()
         txtCiudad.Clear()
@@ -124,16 +124,112 @@ Public Class Form1
         rbtnFemenino.Checked = False
         rbtnNoEspecifica.Checked = False
         cboComuna.SelectedIndex = -1
-        txtRUT.Focus() ' Colocar el foco en el campo RUT
+        cbRUT.Focus() ' Colocar el foco en el campo RUT
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        Dim frm As New index()
+    Private Sub btnCargar_Click(sender As Object, e As EventArgs) Handles btnCargar.Click
+        If cbRUT.SelectedItem Is Nothing Then
+            MessageBox.Show("Seleccione un RUT para cargar los datos.")
+            Return
+        End If
 
-        ' Mostrar el formulario Update
-        frm.Show()
+        Dim rutSeleccionado As String = cbRUT.SelectedItem.ToString()
 
-        ' (Opcional) Ocultar el formulario actual
-        Me.Hide()
+        Using conn As New MySqlConnection(connectionString)
+            Try
+                conn.Open()
+                Dim sql As String = "SELECT Nombre, Apellido, Sexo, Comuna, Ciudad, Observacion 
+                                     FROM Personas WHERE RUT = @rut"
+                Using cmd As New MySqlCommand(sql, conn)
+                    cmd.Parameters.AddWithValue("@rut", rutSeleccionado)
+
+                    Using reader As MySqlDataReader = cmd.ExecuteReader()
+                        If reader.Read() Then
+                            txtNombre.Text = reader("Nombre").ToString()
+                            txtApellido.Text = reader("Apellido").ToString()
+                            txtCiudad.Text = reader("Ciudad").ToString()
+                            txtObservacion.Text = reader("Observacion").ToString()
+
+                            ' Seleccionar comuna en el ComboBox
+                            Dim comuna As String = reader("Comuna").ToString()
+                            If cboComuna.Items.Contains(comuna) Then
+                                cboComuna.SelectedItem = comuna
+                            End If
+
+                            ' Seleccionar sexo
+                            Dim sexo As String = reader("Sexo").ToString()
+                            rbtnMasculino.Checked = (sexo = "Masculino")
+                            rbtnFemenino.Checked = (sexo = "Femenino")
+                            rbtnNoEspecifica.Checked = (sexo = "No especifica")
+                        Else
+                            MessageBox.Show("No se encontraron datos para el RUT seleccionado.")
+                        End If
+                    End Using
+                End Using
+            Catch ex As Exception
+                MessageBox.Show("Error al cargar datos: " & ex.Message)
+            End Try
+        End Using
+    End Sub
+
+    Private Sub btnActualizar_Click(sender As Object, e As EventArgs) Handles btnActualizar.Click
+        If cbRUT.SelectedItem Is Nothing Then
+            MessageBox.Show("Seleccione un RUT antes de actualizar.")
+            Return
+        End If
+
+        Dim rutSeleccionado As String = cbRUT.SelectedItem.ToString()
+        Dim nombre As String = txtNombre.Text.Trim()
+        Dim apellido As String = txtApellido.Text.Trim()
+        Dim ciudad As String = txtCiudad.Text.Trim()
+        Dim observacion As String = txtObservacion.Text.Trim()
+        Dim comuna As String = If(cboComuna.SelectedItem IsNot Nothing, cboComuna.SelectedItem.ToString(), "")
+
+        Dim sexo As String = ""
+        If rbtnMasculino.Checked Then
+            sexo = "Masculino"
+        ElseIf rbtnFemenino.Checked Then
+            sexo = "Femenino"
+        ElseIf rbtnNoEspecifica.Checked Then
+            sexo = "No especifica"
+        End If
+
+        ' Validación mínima
+        If String.IsNullOrWhiteSpace(nombre) OrElse String.IsNullOrWhiteSpace(apellido) OrElse String.IsNullOrWhiteSpace(comuna) Then
+            MessageBox.Show("Complete todos los campos obligatorios (Nombre, Apellido, Comuna).")
+            Return
+        End If
+
+        Using conn As New MySqlConnection(connectionString)
+            Try
+                conn.Open()
+
+                Dim sql As String = "UPDATE Personas 
+                                 SET Nombre=@nombre, Apellido=@apellido, Sexo=@sexo, 
+                                     Comuna=@comuna, Ciudad=@ciudad, Observacion=@observacion 
+                                 WHERE RUT=@rut"
+
+                Using cmd As New MySqlCommand(sql, conn)
+                    cmd.Parameters.AddWithValue("@nombre", nombre)
+                    cmd.Parameters.AddWithValue("@apellido", apellido)
+                    cmd.Parameters.AddWithValue("@sexo", sexo)
+                    cmd.Parameters.AddWithValue("@comuna", comuna)
+                    cmd.Parameters.AddWithValue("@ciudad", ciudad)
+                    cmd.Parameters.AddWithValue("@observacion", observacion)
+                    cmd.Parameters.AddWithValue("@rut", rutSeleccionado)
+
+                    Dim filasAfectadas As Integer = cmd.ExecuteNonQuery()
+
+                    If filasAfectadas > 0 Then
+                        MessageBox.Show("Datos actualizados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    Else
+                        MessageBox.Show("No se encontró el registro a actualizar.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    End If
+                End Using
+
+            Catch ex As Exception
+                MessageBox.Show("Error al actualizar: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+        End Using
     End Sub
 End Class
