@@ -60,7 +60,7 @@ Public Class Form1
         cboComuna.Items.Add("Paine")
     End Sub
 
-    ' Método para limpiar el formulario
+    ' Método para limpiar campos del formulario
     Private Sub LimpiarFormulario()
         cbRUT.Text = ""
         txtNombre.Clear()
