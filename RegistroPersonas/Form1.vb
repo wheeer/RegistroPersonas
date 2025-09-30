@@ -111,17 +111,17 @@ Public Class Form1
         Dim ok As Boolean = True
 
         If String.IsNullOrWhiteSpace(rut) Then
-            lblNombre.ForeColor = Color.Red
-            ok = False
-        Else
-            lblNombre.ForeColor = Color.Black
-        End If
-
-        If String.IsNullOrWhiteSpace(nombre) Then
             lblRut.ForeColor = Color.Red
             ok = False
         Else
             lblRut.ForeColor = Color.Black
+        End If
+
+        If String.IsNullOrWhiteSpace(nombre) Then
+            lblNombre.ForeColor = Color.Red
+            ok = False
+        Else
+            lblNombre.ForeColor = Color.Black
         End If
 
         If String.IsNullOrWhiteSpace(apellido) Then
