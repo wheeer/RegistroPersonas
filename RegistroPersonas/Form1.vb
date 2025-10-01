@@ -170,7 +170,6 @@ Public Class Form1
         Return True
     End Function
 
-
     Private Sub btnGuardar_Click(sender As Object, e As EventArgs) Handles btnGuardar.Click
         Dim rut = cbRUT.Text
         Dim nombre = txtNombre.Text
