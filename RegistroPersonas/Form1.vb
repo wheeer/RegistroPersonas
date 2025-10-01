@@ -118,6 +118,7 @@ Public Class Form1
             End Try
         End Using
     End Sub
+
     ' Función para obtener el sexo seleccionado
     Private Function ObtenerSexo() As String
         If rbtnMasculino.Checked Then
@@ -130,6 +131,7 @@ Public Class Form1
             Return String.Empty
         End If
     End Function
+
     ' Función para validar campos obligatorios y cambio de color en etiquetas
     Private Function ValidarCampos(rut As String, nombre As String, apellido As String, comuna As String) As Boolean
         Dim ok As Boolean = True
