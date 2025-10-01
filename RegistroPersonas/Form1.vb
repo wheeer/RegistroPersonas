@@ -74,7 +74,7 @@ Public Class Form1
         cbRUT.Focus() ' Colocar el foco en el campo RUT
     End Sub
 
-    ' Método para cargar RUT
+    ' Método para cargar RUT en el combobox
     Private Sub cargarRUTs()
         cbRUT.Items.Clear()
         Using conn As New MySqlConnection(connectionString)
