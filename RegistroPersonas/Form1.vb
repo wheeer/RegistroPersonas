@@ -1,16 +1,24 @@
 ﻿Imports MySql.Data.MySqlClient
+Imports System.Drawing.Drawing2D
 
 Public Class Form1
 
     ' Cadena de conexión para MySQL
     Dim connectionString As String = "Server=localhost;Database=registropersonas;User ID='root';Password='';"
+    Dim colorIndex As Integer = 0
+    Dim colorStep As Single = 0.0F
+    Dim rainbowColors() As Color = {Color.Red, Color.Orange, Color.Yellow, Color.Green, Color.Blue, Color.Indigo, Color.Violet}
 
+    ' Declarar el Timer a nivel de clase
+    Private TimerColor As Timer
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Configuración del formulario
         Me.Text = "Registro de Usuarios"
         Me.StartPosition = FormStartPosition.CenterScreen
         Me.FormBorderStyle = FormBorderStyle.FixedSingle
         Me.MaximizeBox = False
+        Me.SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.UserPaint Or ControlStyles.OptimizedDoubleBuffer, True)
+        Me.UpdateStyles()
 
         'Llenar el ComboBox de RUT desde la base de datos
         cargarRUTs()
@@ -58,6 +66,22 @@ Public Class Form1
         cboComuna.Items.Add("Buin")
         cboComuna.Items.Add("Calera de Tango")
         cboComuna.Items.Add("Paine")
+
+        'Inicializar y configurar el Timer
+        TimerColor = New Timer()
+        TimerColor.Interval = 50 ' milisegundos, velocidad del cambio de color
+        AddHandler TimerColor.Tick, AddressOf AnimarFondo
+        TimerColor.Start()
+    End Sub
+
+    ' Evento Tick del Timer para animar el fondo
+    Private Sub AnimarFondo(sender As Object, e As EventArgs)
+        colorStep += 0.02F
+        If colorStep >= 1.0F Then
+            colorStep = 0
+            colorIndex = (colorIndex + 1) Mod rainbowColors.Length
+        End If
+        Me.Invalidate()
     End Sub
 
     ' Método para limpiar campos del formulario
@@ -145,6 +169,7 @@ Public Class Form1
 
         Return True
     End Function
+
 
     Private Sub btnGuardar_Click(sender As Object, e As EventArgs) Handles btnGuardar.Click
         Dim rut = cbRUT.Text
@@ -346,4 +371,24 @@ Public Class Form1
             End Try
         End Using
     End Sub
+    Private Sub Form1_Paint(sender As Object, e As PaintEventArgs) Handles Me.Paint
+        Dim rect As New Rectangle(0, 0, Me.ClientSize.Width, Me.ClientSize.Height)
+
+        ' Interpolación entre color actual y siguiente
+        Dim currentColor As Color = rainbowColors(colorIndex)
+        Dim nextColor As Color = rainbowColors((colorIndex + 1) Mod rainbowColors.Length)
+        Dim blendedColor As Color = InterpolateColor(currentColor, nextColor, colorStep)
+
+        ' Pinta con el color interpolado
+        Using brush As New LinearGradientBrush(rect, blendedColor, blendedColor, 0)
+            e.Graphics.FillRectangle(brush, rect)
+        End Using
+    End Sub
+    ' Función para interpolar entre dos colores
+    Private Function InterpolateColor(c1 As Color, c2 As Color, t As Single) As Color
+        Dim r As Integer = CInt(Math.Min(255, Math.Max(0, CSng(c1.R) + (CSng(c2.R) - CSng(c1.R)) * t)))
+        Dim g As Integer = CInt(Math.Min(255, Math.Max(0, CSng(c1.G) + (CSng(c2.G) - CSng(c1.G)) * t)))
+        Dim b As Integer = CInt(Math.Min(255, Math.Max(0, CSng(c1.B) + (CSng(c2.B) - CSng(c1.B)) * t)))
+        Return Color.FromArgb(r, g, b)
+    End Function
 End Class
