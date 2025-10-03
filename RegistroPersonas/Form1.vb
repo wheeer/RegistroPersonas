@@ -1,20 +1,16 @@
-﻿Imports MySql.Data.MySqlClient
+Imports MySql.Data.MySqlClient
 
 Public Class Form1
 
     ' Cadena de conexión para MySQL
     Dim connectionString As String = "Server=localhost;Database=registropersonas;User ID='root';Password='';"
 
-    Private TimerColor As Timer
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Configuración del formulario
         Me.Text = "Registro de Usuarios"
         Me.StartPosition = FormStartPosition.CenterScreen
         Me.FormBorderStyle = FormBorderStyle.FixedSingle
         Me.MaximizeBox = False
-
-        'Llenar el ComboBox de RUT desde la base de datos
-        cargarRUTs()
 
         ' Llenar el ComboBox con comunas
         cboComuna.Items.Add("Santiago")
@@ -63,7 +59,7 @@ Public Class Form1
 
     ' Método para limpiar campos del formulario
     Private Sub LimpiarFormulario()
-        cbRUT.Text = ""
+        txtRUT.Clear()
         txtNombre.Clear()
         txtApellido.Clear()
         txtCiudad.Clear()
@@ -72,28 +68,7 @@ Public Class Form1
         rbtnFemenino.Checked = False
         rbtnNoEspecifica.Checked = False
         cboComuna.SelectedIndex = -1
-        cbRUT.Focus() ' Colocar el foco en el campo RUT
-    End Sub
-
-    ' Método para cargar RUT en el combobox
-    Private Sub cargarRUTs()
-        cbRUT.Items.Clear()
-        Using conn As New MySqlConnection(connectionString)
-            Try
-                conn.Open()
-                Dim sql As String = "SELECT RUT FROM Personas ORDER BY RUT"
-                Using cmd As New MySqlCommand(sql, conn)
-                    Using reader As MySqlDataReader = cmd.ExecuteReader()
-                        cbRUT.Items.Clear() ' Limpiar antes de cargar
-                        While reader.Read()
-                            cbRUT.Items.Add(reader("RUT").ToString())
-                        End While
-                    End Using
-                End Using
-            Catch ex As Exception
-                MessageBox.Show("Error al cargar RUTs: " & ex.Message)
-            End Try
-        End Using
+        txtRUT.Focus() ' Colocar el foco en el campo RUT
     End Sub
 
     ' Función para obtener el sexo seleccionado
@@ -108,7 +83,6 @@ Public Class Form1
             Return String.Empty
         End If
     End Function
-
     ' Función para validar campos obligatorios y cambio de color en etiquetas
     Private Function ValidarCampos(rut As String, nombre As String, apellido As String, comuna As String) As Boolean
         Dim ok As Boolean = True
@@ -150,7 +124,7 @@ Public Class Form1
     End Function
 
     Private Sub btnGuardar_Click(sender As Object, e As EventArgs) Handles btnGuardar.Click
-        Dim rut = cbRUT.Text
+        Dim rut = txtRUT.Text
         Dim nombre = txtNombre.Text
         Dim apellido = txtApellido.Text
         Dim sexo = ObtenerSexo()
@@ -193,8 +167,7 @@ Public Class Form1
 
                     ' Limpiar el formulario después de guardar
                     LimpiarFormulario()
-                    ' Recargar los RUTs en el ComboBox
-                    cargarRUTs()
+
                 End Using
 
             Catch ex As Exception
@@ -204,12 +177,8 @@ Public Class Form1
     End Sub
 
     Private Sub btnCargar_Click(sender As Object, e As EventArgs) Handles btnCargar.Click
-        If cbRUT.SelectedItem Is Nothing Then
-            MessageBox.Show("Seleccione un RUT para cargar los datos.")
-            Return
-        End If
 
-        Dim rutSeleccionado As String = cbRUT.SelectedItem.ToString()
+        Dim rutSeleccionado As String = txtRUT.Text.Trim()
 
         Using conn As New MySqlConnection(connectionString)
             Try
@@ -249,12 +218,8 @@ Public Class Form1
     End Sub
 
     Private Sub btnActualizar_Click(sender As Object, e As EventArgs) Handles btnActualizar.Click
-        If cbRUT.SelectedItem Is Nothing Then
-            MessageBox.Show("Seleccione un RUT antes de actualizar.")
-            Return
-        End If
 
-        Dim rutSeleccionado As String = cbRUT.SelectedItem.ToString()
+        Dim rutSeleccionado As String = txtRUT.Text.Trim()
         Dim nombre As String = txtNombre.Text.Trim()
         Dim apellido As String = txtApellido.Text.Trim()
         Dim ciudad As String = txtCiudad.Text.Trim()
@@ -309,7 +274,7 @@ Public Class Form1
     End Sub
 
     Private Sub btEliminar_Click(sender As Object, e As EventArgs) Handles btEliminar.Click
-        Dim rut As String = cbRUT.Text
+        Dim rut As String = txtRUT.Text
 
         ' Validar que haya un RUT seleccionado
         If String.IsNullOrWhiteSpace(rut) Then
@@ -338,7 +303,6 @@ Public Class Form1
                     If filas > 0 Then
                         MessageBox.Show("Registro eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information)
                         LimpiarFormulario()
-                        cargarRUTs()
                     Else
                         MessageBox.Show("No se encontró un registro con ese RUT.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                     End If
@@ -349,4 +313,3 @@ Public Class Form1
             End Try
         End Using
     End Sub
-End Class
