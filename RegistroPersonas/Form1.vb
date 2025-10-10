@@ -151,7 +151,7 @@ Public Class Form1
                 conn.Open()
 
                 Dim sql = "INSERT INTO Personas (RUT, Nombre, Apellido, Sexo, Comuna, Ciudad, Observacion) " &
-            "VALUES (@rut, @nombre, @apellido, @sexo, @comuna, @ciudad, @observacion)"
+                "VALUES (@rut, @nombre, @apellido, @sexo, @comuna, @ciudad, @observacion)"
 
                 Using cmd As New MySqlCommand(sql, conn)
                     cmd.Parameters.AddWithValue("@rut", rut)
@@ -313,4 +313,3 @@ Public Class Form1
             End Try
         End Using
     End Sub
-End Class

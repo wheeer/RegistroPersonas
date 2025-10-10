@@ -39,18 +39,17 @@ Partial Class Form1
         txtObservacion = New TextBox()
         cboComuna = New ComboBox()
         btnCargar = New Button()
+        cbRUT = New ComboBox()
         btnActualizar = New Button()
         btEliminar = New Button()
         Label7 = New Label()
-        txtRut = New TextBox()
-        Label1 = New Label()
         grSexo.SuspendLayout()
         SuspendLayout()
         ' 
         ' lblRut
         ' 
         lblRut.AutoSize = True
-        lblRut.Location = New Point(12, 31)
+        lblRut.Location = New Point(12, 9)
         lblRut.Name = "lblRut"
         lblRut.Size = New Size(30, 15)
         lblRut.TabIndex = 0
@@ -59,7 +58,7 @@ Partial Class Form1
         ' lblNombre
         ' 
         lblNombre.AutoSize = True
-        lblNombre.Location = New Point(12, 60)
+        lblNombre.Location = New Point(12, 38)
         lblNombre.Name = "lblNombre"
         lblNombre.Size = New Size(61, 15)
         lblNombre.TabIndex = 1
@@ -68,7 +67,7 @@ Partial Class Form1
         ' lblApellido
         ' 
         lblApellido.AutoSize = True
-        lblApellido.Location = New Point(12, 92)
+        lblApellido.Location = New Point(12, 70)
         lblApellido.Name = "lblApellido"
         lblApellido.Size = New Size(61, 15)
         lblApellido.TabIndex = 2
@@ -79,7 +78,7 @@ Partial Class Form1
         grSexo.Controls.Add(rbtnNoEspecifica)
         grSexo.Controls.Add(rbtnFemenino)
         grSexo.Controls.Add(rbtnMasculino)
-        grSexo.Location = New Point(12, 128)
+        grSexo.Location = New Point(12, 106)
         grSexo.Name = "grSexo"
         grSexo.Size = New Size(337, 57)
         grSexo.TabIndex = 3
@@ -119,7 +118,7 @@ Partial Class Form1
         ' lblComuna
         ' 
         lblComuna.AutoSize = True
-        lblComuna.Location = New Point(12, 201)
+        lblComuna.Location = New Point(12, 179)
         lblComuna.Name = "lblComuna"
         lblComuna.Size = New Size(58, 15)
         lblComuna.TabIndex = 4
@@ -128,7 +127,7 @@ Partial Class Form1
         ' Label5
         ' 
         Label5.AutoSize = True
-        Label5.Location = New Point(12, 233)
+        Label5.Location = New Point(12, 211)
         Label5.Name = "Label5"
         Label5.Size = New Size(45, 15)
         Label5.TabIndex = 5
@@ -137,7 +136,7 @@ Partial Class Form1
         ' Label6
         ' 
         Label6.AutoSize = True
-        Label6.Location = New Point(12, 265)
+        Label6.Location = New Point(12, 243)
         Label6.Name = "Label6"
         Label6.Size = New Size(73, 15)
         Label6.TabIndex = 6
@@ -145,7 +144,7 @@ Partial Class Form1
         ' 
         ' btnGuardar
         ' 
-        btnGuardar.Location = New Point(129, 303)
+        btnGuardar.Location = New Point(129, 281)
         btnGuardar.Name = "btnGuardar"
         btnGuardar.Size = New Size(109, 23)
         btnGuardar.TabIndex = 7
@@ -154,28 +153,28 @@ Partial Class Form1
         ' 
         ' txtNombre
         ' 
-        txtNombre.Location = New Point(90, 57)
+        txtNombre.Location = New Point(90, 35)
         txtNombre.Name = "txtNombre"
         txtNombre.Size = New Size(259, 23)
         txtNombre.TabIndex = 10
         ' 
         ' txtApellido
         ' 
-        txtApellido.Location = New Point(90, 89)
+        txtApellido.Location = New Point(90, 67)
         txtApellido.Name = "txtApellido"
         txtApellido.Size = New Size(259, 23)
         txtApellido.TabIndex = 11
         ' 
         ' txtCiudad
         ' 
-        txtCiudad.Location = New Point(90, 230)
+        txtCiudad.Location = New Point(90, 208)
         txtCiudad.Name = "txtCiudad"
         txtCiudad.Size = New Size(259, 23)
         txtCiudad.TabIndex = 13
         ' 
         ' txtObservacion
         ' 
-        txtObservacion.Location = New Point(90, 262)
+        txtObservacion.Location = New Point(90, 240)
         txtObservacion.Name = "txtObservacion"
         txtObservacion.Size = New Size(259, 23)
         txtObservacion.TabIndex = 14
@@ -183,23 +182,31 @@ Partial Class Form1
         ' cboComuna
         ' 
         cboComuna.FormattingEnabled = True
-        cboComuna.Location = New Point(90, 198)
+        cboComuna.Location = New Point(90, 176)
         cboComuna.Name = "cboComuna"
         cboComuna.Size = New Size(259, 23)
         cboComuna.TabIndex = 15
         ' 
         ' btnCargar
         ' 
-        btnCargar.Location = New Point(240, 28)
+        btnCargar.Location = New Point(240, 6)
         btnCargar.Name = "btnCargar"
         btnCargar.Size = New Size(109, 23)
         btnCargar.TabIndex = 34
         btnCargar.Text = "Cargar Datos"
         btnCargar.UseVisualStyleBackColor = True
         ' 
+        ' cbRUT
+        ' 
+        cbRUT.FormattingEnabled = True
+        cbRUT.Location = New Point(90, 6)
+        cbRUT.Name = "cbRUT"
+        cbRUT.Size = New Size(128, 23)
+        cbRUT.TabIndex = 33
+        ' 
         ' btnActualizar
         ' 
-        btnActualizar.Location = New Point(12, 303)
+        btnActualizar.Location = New Point(12, 281)
         btnActualizar.Name = "btnActualizar"
         btnActualizar.Size = New Size(109, 23)
         btnActualizar.TabIndex = 35
@@ -208,7 +215,7 @@ Partial Class Form1
         ' 
         ' btEliminar
         ' 
-        btEliminar.Location = New Point(244, 303)
+        btEliminar.Location = New Point(244, 281)
         btEliminar.Name = "btEliminar"
         btEliminar.Size = New Size(109, 23)
         btEliminar.TabIndex = 36
@@ -219,39 +226,22 @@ Partial Class Form1
         ' 
         Label7.AutoSize = True
         Label7.Font = New Font("Segoe UI", 7F)
-        Label7.Location = New Point(244, 341)
+        Label7.Location = New Point(244, 319)
         Label7.Name = "Label7"
         Label7.Size = New Size(102, 12)
         Label7.TabIndex = 37
         Label7.Text = "* Campos obligatorios"
         ' 
-        ' txtRut
-        ' 
-        txtRut.Location = New Point(93, 28)
-        txtRut.Name = "txtRut"
-        txtRut.Size = New Size(141, 23)
-        txtRut.TabIndex = 38
-        ' 
-        ' Label1
-        ' 
-        Label1.AutoSize = True
-        Label1.Location = New Point(93, 9)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(110, 15)
-        Label1.TabIndex = 39
-        Label1.Text = " Ejemplo 123456789"
-        ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(361, 363)
-        Controls.Add(Label1)
-        Controls.Add(txtRut)
+        ClientSize = New Size(361, 340)
         Controls.Add(Label7)
         Controls.Add(btEliminar)
         Controls.Add(btnActualizar)
         Controls.Add(btnCargar)
+        Controls.Add(cbRUT)
         Controls.Add(cboComuna)
         Controls.Add(txtObservacion)
         Controls.Add(txtCiudad)
@@ -290,10 +280,9 @@ Partial Class Form1
     Friend WithEvents txtObservacion As TextBox
     Friend WithEvents cboComuna As ComboBox
     Friend WithEvents btnCargar As Button
+    Friend WithEvents cbRUT As ComboBox
     Friend WithEvents btnActualizar As Button
     Friend WithEvents btEliminar As Button
     Friend WithEvents Label7 As Label
-    Friend WithEvents txtRut As TextBox
-    Friend WithEvents Label1 As Label
 
 End Class
