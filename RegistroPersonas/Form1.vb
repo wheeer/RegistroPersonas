@@ -216,13 +216,13 @@ Public Class Form1
     ' Evento Click del botón Actualizar
     Private Sub btnActualizar_Click(sender As Object, e As EventArgs) Handles btnActualizar.Click
 
-        Dim rutSeleccionado As String = txtRUT.Text.Trim()
-        Dim nombre As String = txtNombre.Text.Trim()
-        Dim apellido As String = txtApellido.Text.Trim()
-        Dim ciudad As String = txtCiudad.Text.Trim()
-        Dim observacion As String = txtObservacion.Text.Trim()
-        Dim comuna As String = If(cboComuna.SelectedItem IsNot Nothing, cboComuna.SelectedItem.ToString(), "")
-        Dim sexo As String = ObtenerSexo()
+        Dim rutSeleccionado = txtRUT.Text.Trim
+        Dim nombre = txtNombre.Text.Trim
+        Dim apellido = txtApellido.Text.Trim
+        Dim ciudad = txtCiudad.Text.Trim
+        Dim observacion = txtObservacion.Text.Trim
+        Dim comuna = If(cboComuna.SelectedItem IsNot Nothing, cboComuna.SelectedItem.ToString, "")
+        Dim sexo = ObtenerSexo()
 
         ' Validar la selección del sexo
         If sexo Is Nothing Then
@@ -239,7 +239,7 @@ Public Class Form1
             Try
                 conn.Open()
 
-                Dim sql As String = "UPDATE Personas 
+                Dim sql = "UPDATE Personas 
                                  SET Nombre=@nombre, Apellido=@apellido, Sexo=@sexo, 
                                      Comuna=@comuna, Ciudad=@ciudad, Observacion=@observacion 
                                  WHERE RUT=@rut"
@@ -253,7 +253,7 @@ Public Class Form1
                     cmd.Parameters.AddWithValue("@observacion", observacion)
                     cmd.Parameters.AddWithValue("@rut", rutSeleccionado)
 
-                    Dim filasAfectadas As Integer = cmd.ExecuteNonQuery()
+                    Dim filasAfectadas = cmd.ExecuteNonQuery
 
                     If filasAfectadas > 0 Then
                         MessageBox.Show("Datos actualizados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -307,6 +307,45 @@ Public Class Form1
 
             Catch ex As Exception
                 MessageBox.Show("Error al eliminar el registro: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+        End Using
+    End Sub
+
+    Private Sub btVer_Click(sender As Object, e As EventArgs) Handles btVer.Click
+        Using conn As New MySqlConnection(connectionString)
+            Try
+                conn.Open()
+
+                Dim sql As String = "SELECT RUT, Nombre, Apellido, Sexo, Comuna, Ciudad, Observacion FROM Personas"
+
+                Using cmd As New MySqlCommand(sql, conn)
+                    Using reader As MySqlDataReader = cmd.ExecuteReader()
+                        Dim datos As New System.Text.StringBuilder()
+
+                        If reader.HasRows Then
+                            datos.AppendLine("=== LISTADO DE PERSONAS ===")
+                            datos.AppendLine("")
+
+                            While reader.Read()
+                                datos.AppendLine("RUT: " & reader("RUT").ToString())
+                                datos.AppendLine("Nombre: " & reader("Nombre").ToString())
+                                datos.AppendLine("Apellido: " & reader("Apellido").ToString())
+                                datos.AppendLine("Sexo: " & reader("Sexo").ToString())
+                                datos.AppendLine("Comuna: " & reader("Comuna").ToString())
+                                datos.AppendLine("Ciudad: " & reader("Ciudad").ToString())
+                                datos.AppendLine("Observación: " & reader("Observacion").ToString())
+                                datos.AppendLine("----------------------------------------")
+                            End While
+
+                            MessageBox.Show(datos.ToString(), "Personas Registradas", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        Else
+                            MessageBox.Show("No hay registros en la base de datos.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        End If
+                    End Using
+                End Using
+
+            Catch ex As Exception
+                MessageBox.Show("Error al mostrar los datos: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         End Using
     End Sub
