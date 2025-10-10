@@ -26,9 +26,9 @@ Partial Class Form1
         lblNombre = New Label()
         lblApellido = New Label()
         grSexo = New GroupBox()
-        rbtnNoEspecifica = New CheckBox()
-        rbtnFemenino = New CheckBox()
-        rbtnMasculino = New CheckBox()
+        rbtnNoEspecifica = New RadioButton()
+        rbtnFemenino = New RadioButton()
+        rbtnMasculino = New RadioButton()
         lblComuna = New Label()
         Label5 = New Label()
         Label6 = New Label()
@@ -89,30 +89,33 @@ Partial Class Form1
         ' rbtnNoEspecifica
         ' 
         rbtnNoEspecifica.AutoSize = True
-        rbtnNoEspecifica.Location = New Point(203, 22)
+        rbtnNoEspecifica.Location = New Point(228, 22)
         rbtnNoEspecifica.Name = "rbtnNoEspecifica"
-        rbtnNoEspecifica.Size = New Size(97, 19)
+        rbtnNoEspecifica.Size = New Size(96, 19)
         rbtnNoEspecifica.TabIndex = 2
-        rbtnNoEspecifica.Text = "No especifica"
+        rbtnNoEspecifica.TabStop = True
+        rbtnNoEspecifica.Text = "No Especifica"
         rbtnNoEspecifica.UseVisualStyleBackColor = True
         ' 
         ' rbtnFemenino
         ' 
         rbtnFemenino.AutoSize = True
-        rbtnFemenino.Location = New Point(105, 22)
+        rbtnFemenino.Location = New Point(125, 22)
         rbtnFemenino.Name = "rbtnFemenino"
-        rbtnFemenino.Size = New Size(79, 19)
+        rbtnFemenino.Size = New Size(78, 19)
         rbtnFemenino.TabIndex = 1
+        rbtnFemenino.TabStop = True
         rbtnFemenino.Text = "Femenino"
         rbtnFemenino.UseVisualStyleBackColor = True
         ' 
         ' rbtnMasculino
         ' 
         rbtnMasculino.AutoSize = True
-        rbtnMasculino.Location = New Point(13, 22)
+        rbtnMasculino.Location = New Point(12, 22)
         rbtnMasculino.Name = "rbtnMasculino"
-        rbtnMasculino.Size = New Size(81, 19)
+        rbtnMasculino.Size = New Size(80, 19)
         rbtnMasculino.TabIndex = 0
+        rbtnMasculino.TabStop = True
         rbtnMasculino.Text = "Masculino"
         rbtnMasculino.UseVisualStyleBackColor = True
         ' 
@@ -246,7 +249,7 @@ Partial Class Form1
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(361, 357)
+        ClientSize = New Size(361, 374)
         Controls.Add(Label1)
         Controls.Add(txtRUT)
         Controls.Add(Label7)
@@ -278,9 +281,6 @@ Partial Class Form1
     Friend WithEvents lblNombre As Label
     Friend WithEvents lblApellido As Label
     Friend WithEvents grSexo As GroupBox
-    Friend WithEvents rbtnNoEspecifica As CheckBox
-    Friend WithEvents rbtnFemenino As CheckBox
-    Friend WithEvents rbtnMasculino As CheckBox
     Friend WithEvents lblComuna As Label
     Friend WithEvents Label5 As Label
     Friend WithEvents Label6 As Label
@@ -296,5 +296,8 @@ Partial Class Form1
     Friend WithEvents Label7 As Label
     Friend WithEvents txtRUT As TextBox
     Friend WithEvents Label1 As Label
+    Friend WithEvents rbtnNoEspecifica As RadioButton
+    Friend WithEvents rbtnFemenino As RadioButton
+    Friend WithEvents rbtnMasculino As RadioButton
 
 End Class
