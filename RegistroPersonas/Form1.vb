@@ -4,7 +4,6 @@ Public Class Form1
 
     ' Cadena de conexión para MySQL
     Dim connectionString As String = "Server=localhost;Database=registropersonas;User ID='root';Password='';"
-
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Configuración del formulario
         Me.Text = "Registro de Usuarios"
@@ -56,7 +55,6 @@ Public Class Form1
         cboComuna.Items.Add("Calera de Tango")
         cboComuna.Items.Add("Paine")
     End Sub
-
     ' Método para limpiar campos del formulario
     Private Sub LimpiarFormulario()
         txtRUT.Clear()
@@ -70,7 +68,6 @@ Public Class Form1
         cboComuna.SelectedIndex = -1
         txtRUT.Focus() ' Colocar el foco en el campo RUT
     End Sub
-
     ' Función para obtener el sexo seleccionado
     Private Function ObtenerSexo() As String
         If rbtnMasculino.Checked Then
@@ -122,7 +119,7 @@ Public Class Form1
 
         Return True
     End Function
-
+    ' Evento Click del botón Guardar
     Private Sub btnGuardar_Click(sender As Object, e As EventArgs) Handles btnGuardar.Click
         Dim rut = txtRUT.Text
         Dim nombre = txtNombre.Text
@@ -175,7 +172,7 @@ Public Class Form1
             End Try
         End Using
     End Sub
-
+    ' Evento Click del botón Cargar
     Private Sub btnCargar_Click(sender As Object, e As EventArgs) Handles btnCargar.Click
 
         Dim rutSeleccionado As String = txtRUT.Text.Trim()
@@ -216,7 +213,7 @@ Public Class Form1
             End Try
         End Using
     End Sub
-
+    ' Evento Click del botón Actualizar
     Private Sub btnActualizar_Click(sender As Object, e As EventArgs) Handles btnActualizar.Click
 
         Dim rutSeleccionado As String = txtRUT.Text.Trim()
@@ -272,7 +269,7 @@ Public Class Form1
             End Try
         End Using
     End Sub
-
+    ' Evento Click del botón Eliminar
     Private Sub btEliminar_Click(sender As Object, e As EventArgs) Handles btEliminar.Click
         Dim rut As String = txtRUT.Text
 
