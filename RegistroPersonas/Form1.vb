@@ -313,3 +313,4 @@ Public Class Form1
             End Try
         End Using
     End Sub
+End Class
